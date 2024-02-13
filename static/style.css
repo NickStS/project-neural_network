@@ -1,3 +1,11 @@
+:root {
+    --acent-color: #2196F3;
+    --thirty-five-color: #353535;
+    --background-colot-f4: #f4f4f4;
+    --white-color: #fff;
+}
+
+
 body {
     display: flex;
     align-items: center;
@@ -5,11 +13,33 @@ body {
     height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: var(--background-colot-f4);
 }
 
 .container {
     text-align: center;
+}
+
+.command {
+    text-align: center;
+}
+
+.drop-area {
+    width: 500px;
+    height: 250px;
+    border: 2px dashed var(--acent-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text {
+    margin-top: 50px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .upload-form {
@@ -21,7 +51,7 @@ body {
 }
 
 .highlight-text {
-    border: 2px solid #3498db;
+    border: 2px solid var(--acent-color);
     padding: 2px 5px;
     border-radius: 5px;
 }
@@ -32,8 +62,8 @@ body {
 
 .upload-button {
     padding: 10px 20px;
-    background-color: #3498db;
-    color: #fff;
+    background-color: var(--acent-color);
+    color: var(--white-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -41,7 +71,11 @@ body {
 }
 
 .upload-button:hover {
-    background-color: #2980b9;
+    background-color: var(--acent-color);
+}
+
+.uploaded-section {
+    margin-top: 50px;
 }
 
 #uploaded-photo {
@@ -63,4 +97,43 @@ body {
 #uploaded-photo p {
     font-size: 16px;
     margin: 5px 0;
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+    .command {
+        font-size: 25px;
+    }
+
+    .text {
+        display: none;
+    }
+
+    .drop-area {
+        border: none;
+        width: 100%;
+        height: 100%;
+        margin-top: 50px;
+    }
+
+    .buttons {
+        margin-bottom: 20px;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        flex-direction: column;
+    }
+
+    .highlight-text {
+        padding: 8px 15px;
+    }
+
+    .upload-button {
+        width: 147px;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+    }
 }
