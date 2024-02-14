@@ -49,11 +49,9 @@
             })
                 .then(response => response.blob())
                 .then(blob => {
-                    // Display uploaded photo
                     uploadedPhotoDiv.style.display = 'block';
                     photoPreview.src = URL.createObjectURL(blob);
-
-                    // Get image dimensions
+                    
                     const image = new Image();
                     image.src = URL.createObjectURL(blob);
                     image.onload = function () {
