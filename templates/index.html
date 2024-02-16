@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,29 +8,29 @@
     <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
     <title>Command Project</title>
 </head>
+
 <body>
     <div class="container">
         <h1 class="command">Command number five</h1>
-        
-        <form id="upload-form" class="drop-area" action="/uploadfile/" method="post" enctype="multipart/form-data" ondragover="allowDrop(event)" ondrop="dropHandler(event)">
+
+        <form id="upload-form" class="drop-area" action="/uploadfile/" method="post" enctype="multipart/form-data"
+            ondragover="allowDrop(event)" ondrop="dropHandler(event)">
             <p class="text">Select files or drag them here</p>
             <label for="file-input" class="file-label">
                 <span class="highlight-text">Choose a photo</span>
             </label>
             <input type="file" name="file" accept="image/*" id="file-input" class="file-input">
-            <button type="submit" class="upload-button" onclick="uploadPhoto()">Upload</button>
+            <button type="submit" class="upload-button">Upload</button>
         </form>
-        
 
         <div id="uploaded-photo" class="uploaded-section" style="display: none;">
             <h2>Uploaded Photo</h2>
             <img id="photo-preview" alt="Uploaded Photo" class="uploaded-image">
-            <p>Width: <span id="width"></span> pixels</p>
-            <p>Height: <span id="height"></span> pixels</p>
+            <p id="predicted-class"></p> <!-- Added line for predicted class -->
         </div>
     </div>
 
-    <!-- Добавленный JavaScript -->
+    <!-- Updated JavaScript code -->
     <script>
         document.getElementById('upload-form').addEventListener('submit', function (event) {
             event.preventDefault();
@@ -37,8 +38,7 @@
             const fileInput = document.getElementById('file-input');
             const uploadedPhotoDiv = document.getElementById('uploaded-photo');
             const photoPreview = document.getElementById('photo-preview');
-            const widthSpan = document.getElementById('width');
-            const heightSpan = document.getElementById('height');
+            const predictedClassSpan = document.getElementById('predicted-class');
 
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
@@ -47,17 +47,15 @@
                 method: 'POST',
                 body: formData
             })
-                .then(response => response.blob())
+                .then(response => {
+                    const predictedClass = response.headers.get('Predicted-Class');
+                    predictedClassSpan.textContent = `Predicted Class: ${predictedClass}`;
+
+                    return response.blob();
+                })
                 .then(blob => {
                     uploadedPhotoDiv.style.display = 'block';
                     photoPreview.src = URL.createObjectURL(blob);
-                    
-                    const image = new Image();
-                    image.src = URL.createObjectURL(blob);
-                    image.onload = function () {
-                        widthSpan.textContent = this.width;
-                        heightSpan.textContent = this.height;
-                    };
                 })
                 .catch(error => console.error('Error:', error));
         });
@@ -76,17 +74,21 @@
             event.preventDefault();
         }
 
-        function handleFile() {
-            var input = document.getElementById('file-input');
-            displayFile(input.files[0]);
-        }
-
         function displayFile(file) {
             var uploadedPhoto = document.getElementById('uploaded-photo');
 
             if (file && file.type.startsWith('image/')) {
                 var reader = new FileReader();
 
+                reader.onload = function (e) {
+                    var img = new Image();
+                    img.src = e.target.result;
+
+                    // Assuming you have a model or endpoint to predict the class
+                    // You need to update this part based on your backend implementation
+                    // For demonstration purposes, I'll use a placeholder text
+                    predictClassPlaceholder(img);
+                };
 
                 reader.readAsDataURL(file);
             } else {
@@ -95,22 +97,14 @@
             }
         }
 
-        function uploadPhoto() {
-            var input = document.getElementById('file-input');
-            var uploadedPhoto = document.getElementById('uploaded-photo');
-
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                alert('Select or drag the file first.');
-            }
+        function predictClassPlaceholder(img) {
+            // Placeholder function to simulate predicting the class
+            // You need to replace this with your actual prediction logic
+            const predictedClassSpan = document.getElementById('predicted-class');
+            predictedClassSpan.textContent = 'Predicted Class: PlaceholderClass';
         }
     </script>
 
 </body>
+
 </html>
-
-

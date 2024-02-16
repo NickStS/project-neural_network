@@ -14,9 +14,10 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 import io
 from IPython.display import display
-from google.colab import output
+#from google.colab import output
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
+import gdown
 
 # Загрузка и предобработка данных
 (train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
@@ -164,10 +165,13 @@ model.compile(optimizer='adam',
               sample_weight_mode='temporal')
 
 # Дообучение модели с учетом весов классов
-history_fine = model.fit(train_images, train_labels, epochs=10, validation_data=(test_images, test_labels), class_weight=class_weights)
+history_fine = model.fit(train_images, train_labels, epochs=20, validation_data=(test_images, test_labels), class_weight=class_weights)
 
 # Дообучение модели на дополнительных 20 эпохах с учетом весов классов
 history_fine = model.fit(train_images, train_labels, epochs=20, validation_data=(test_images, test_labels), class_weight=class_weights)
+
+# Сохранение модели
+model.save('model_I.h5')
 
 # Вывод точности после дообучения
 plt.plot(history_fine.history['accuracy'], label='Точность на обучении')
@@ -202,7 +206,7 @@ for i in range(10):
 plt.tight_layout()
 plt.show()
 
-def predict_image_class_from_file(file, model):
+def predict_image_class_from_file(file):
     # Преобразование файла в изображение
     img = image.load_img(file, target_size=(32, 32))
     # Преобразование изображения в массив numpy
@@ -219,4 +223,4 @@ def predict_image_class_from_file(file, model):
     class_labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
     predicted_class = class_labels[predicted_class_index]
     # Вывод предсказанного класса
-    print(f"Прогноз: {predicted_class}")
+    return(f"Прогноз: {predicted_class}")

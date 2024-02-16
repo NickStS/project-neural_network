@@ -1,14 +1,16 @@
-FROM python:3.10
+FROM python:3.10.8
 
-WORKDIR /project-neural_network
+WORKDIR /web
 
-RUN pip install poetry
-
-COPY poetry.lock pyproject.toml ./
-
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi --no-dev|| echo "Poetry install failed"
-
+# Копирование и установка зависимостей из requirements.txt
+# COPY requirements.txt .
+# RUN python -m venv .venv && \
+#     .\.venv\Scripts\Activate && \
+#     pip install --upgrade pip && \
+#     pip install -r requirements.txt
+RUN python -m venv venv
+COPY requirements.txt .
+RUN venv\Scripts\activate && pip install -r requirements.txt
 
 COPY . .
 
