@@ -14,10 +14,9 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 import io
 from IPython.display import display
-#from google.colab import output
+from google.colab import output
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
-import gdown
 
 # Загрузка и предобработка данных
 (train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
