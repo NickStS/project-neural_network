@@ -22,23 +22,40 @@
             <input type="file" name="file" accept="image/*" id="file-input" class="file-input">
             <button type="submit" class="upload-button">Upload</button>
         </form>
-
+		<div id="file-name"></div>
+		
+		<!-- -->
+		<div class="image-block">
         <div id="uploaded-photo" class="uploaded-section" style="display: none;">
-            <h2>Uploaded Photo</h2>
-            <img id="photo-preview" alt="Uploaded Photo" class="uploaded-image">
-            <p id="predicted-class"></p> <!-- Added line for predicted class -->
+           <h2>Uploaded Photo</h2>
+		   <img id="photo-preview" alt="Uploaded Photo" class="uploaded-image">
+		   <p id="predicted-class"></p> 
         </div>
+		</div>
     </div>
+	
+
+	
 
     <!-- Updated JavaScript code -->
-    <script>
-        document.getElementById('upload-form').addEventListener('submit', function (event) {
-            event.preventDefault();
+     <script>
+        const form = document.getElementById('upload-form');
+		const fileNameParagraph = document.getElementById('file-name');
+        const fileInput = document.getElementById('file-input');
+        const uploadedPhotoDiv = document.getElementById('uploaded-photo');
+        const photoPreview = document.getElementById('photo-preview');
+        const predictedClassSpan = document.getElementById('predicted-class');
 
-            const fileInput = document.getElementById('file-input');
-            const uploadedPhotoDiv = document.getElementById('uploaded-photo');
-            const photoPreview = document.getElementById('photo-preview');
-            const predictedClassSpan = document.getElementById('predicted-class');
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                fileNameParagraph.textContent = `Image ${file.name} added, click Upload!`;
+            }
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
 
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
@@ -60,14 +77,13 @@
                 .catch(error => console.error('Error:', error));
         });
 
-        document.getElementById('upload-form').addEventListener('dragover', allowDrop);
-        document.getElementById('upload-form').addEventListener('drop', dropHandler);
+        form.addEventListener('dragover', allowDrop);
+        form.addEventListener('drop', dropHandler);
 
         function dropHandler(event) {
             event.preventDefault();
-            var input = document.getElementById('file-input');
-            input.files = event.dataTransfer.files;
-            displayFile(input.files[0]);
+            fileInput.files = event.dataTransfer.files;
+            displayFile(fileInput.files[0]);
         }
 
         function allowDrop(event) {
@@ -75,8 +91,6 @@
         }
 
         function displayFile(file) {
-            var uploadedPhoto = document.getElementById('uploaded-photo');
-
             if (file && file.type.startsWith('image/')) {
                 var reader = new FileReader();
 
@@ -92,7 +106,7 @@
 
                 reader.readAsDataURL(file);
             } else {
-                uploadedPhoto.style.display = 'none';
+                uploadedPhotoDiv.style.display = 'none';
                 alert('Select or drag the corresponding file image.');
             }
         }
@@ -100,11 +114,9 @@
         function predictClassPlaceholder(img) {
             // Placeholder function to simulate predicting the class
             // You need to replace this with your actual prediction logic
-            const predictedClassSpan = document.getElementById('predicted-class');
             predictedClassSpan.textContent = 'Predicted Class: PlaceholderClass';
         }
     </script>
-
 </body>
 
 </html>
