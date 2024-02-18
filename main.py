@@ -16,7 +16,7 @@ from tensorflow.keras.preprocessing import image as tf_image
 
 
 app = FastAPI()
-# Загрузка предварительно обученной модели
+
 model = load_model('model_I.h5')
 
 class_labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
@@ -52,15 +52,3 @@ async def upload_photo(file: UploadFile = File(...)):
 
 if __name__ == '__main__':
     uvicorn.run(app, host='127.0.0.1', port=8000)
-
-
-
-# @app.post("/uploadfile/")
-# async def upload_photo(file: UploadFile = File(...)):
-#     contents = await file.read()
-#     image = Image.open(io.BytesIO(contents))
-#     resized_image = image.resize((32, 32))
-#     output_buffer = io.BytesIO()
-#     resized_image.save(output_buffer, format="JPEG", quality=95)
-#     compressed_contents = output_buffer.getvalue()
-#     return StreamingResponse(io.BytesIO(compressed_contents), media_type="image/jpeg")
